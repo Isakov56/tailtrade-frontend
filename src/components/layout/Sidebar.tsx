@@ -39,8 +39,10 @@ export function Sidebar() {
     (item) => !item.roles || item.roles.includes(user?.role || '')
   );
 
+  const langCycle = { en: 'ru', ru: 'uz', uz: 'en' } as const;
+  const langLabel = { en: 'Русский', ru: "O'zbekcha", uz: 'English' } as const;
   const toggleLang = () => {
-    const next = i18n.language === 'en' ? 'ru' : 'en';
+    const next = langCycle[i18n.language as keyof typeof langCycle] || 'en';
     i18n.changeLanguage(next);
     localStorage.setItem('tiletrade-lang', next);
   };
@@ -97,7 +99,7 @@ export function Sidebar() {
           onClick={toggleLang}
         >
           <Globe className="h-5 w-5 shrink-0" />
-          {!collapsed && <span>{i18n.language === 'en' ? 'Русский' : 'English'}</span>}
+          {!collapsed && <span>{langLabel[i18n.language as keyof typeof langLabel] || 'English'}</span>}
         </Button>
         {!collapsed && user && (
           <div className="mb-2 px-3 py-2">
